@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="zh-TW">
+  <head>
+    <meta content="b1ce20ed-9214-470c-97d0-2648fc2f7760" name="dtb:uid"/>
+    <meta content="1" name="dtb:depth"/>
+    <meta content="calibre (3.44.0)" name="dtb:generator"/>
+    <meta content="0" name="dtb:totalPageCount"/>
+    <meta content="0" name="dtb:maxPageNumber"/>
+  </head>
+  <docTitle>
+    <text>ePub 手作練習</text>
+  </docTitle>
+  <navMap>
+    <navPoint id="ch1" playOrder="1">
+      <navLabel>
+        <text>ePub 格式解析</text>
+      </navLabel>
+      <content src="format.html"/>
+    </navPoint>
+    <navPoint id="ch2" playOrder="2">
+      <navLabel>
+        <text>動手做書樂無窮</text>
+      </navLabel>
+      <content src="diy.html"/>
+    </navPoint>
+   </navMap>
+</ncx>
