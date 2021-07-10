@@ -21,6 +21,7 @@ namespace EpubBook
     /// <param name="q"></param>
     static void GetIThomeIronmanHtml(string uri)
     {
+     // var ithome = new IThomeService(uri);
       var client = new RestClient();
       var request = new RestRequest(uri);
       var response = client.Get(request);
@@ -35,7 +36,6 @@ namespace EpubBook
       GetAuthor(document);
       GetTitle(document);
       GetDescription(document);
-      
       foreach(var doc in documents){
         GetAgenda(doc);
       }
@@ -77,9 +77,36 @@ namespace EpubBook
         }
     }
 
+    // <summary>
+    /// 取得目錄
+    /// </summary>
+    /// <param name="document"></param>
+    private static IEnumerable<AgendaDto> GetAgenda(HtmlDocument document)
+    {
+      var agenda_nodes = document.DocumentNode.SelectNodes("//h3[contains(@class, 'qa-list__title')]");
+      foreach (var agenda_node in agenda_nodes.ToList())
+      {
+        HtmlDocument hda = new HtmlDocument();
+        // XPath 來解讀它
+        hda.LoadHtml(agenda_node.InnerHtml);
+        var agenda_title_node = hda.DocumentNode.SelectSingleNode(@"//a");
+        if (agenda_title_node != null)
+        {
+          var agenda_title = agenda_title_node.InnerHtml.Trim();
+          var agenda_url = agenda_title_node.SelectSingleNode(".").Attributes["href"].Value.Trim();
+          Console.WriteLine($"agenda_title_node : {agenda_title}");
+          Console.WriteLine($"agenda_url : {agenda_url}");
+          yield return new AgendaDto(agenda_title, agenda_url);
+        }
+      }
+    }
+
     private static void GetAuthor(HtmlDocument document)
     {
-      throw new NotImplementedException();
+      //標題
+      var authorNode = document.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div/div[1]/div[1]/div[2]/div[1]");
+      var author = authorNode.InnerText.Replace("\n", "").Trim();
+      Console.WriteLine($"author : {author}");
     }
 
 
@@ -106,38 +133,6 @@ namespace EpubBook
       var title_desc = title_desc_Node.InnerText.Trim();
       Console.WriteLine($"title_desc : {title_desc}");
     }
-
-
-    /// <summary>
-    /// 取得目錄
-    /// </summary>
-    /// <param name="document"></param>
-    private static IEnumerable<AgendaDto> GetAgenda(HtmlDocument document)
-    {
-      var agenda_nodes = document.DocumentNode.SelectNodes("//h3[contains(@class, 'qa-list__title')]");
-      foreach (var agenda_node in agenda_nodes.ToList())
-      {
-        HtmlDocument hda = new HtmlDocument();
-        // XPath 來解讀它
-        hda.LoadHtml(agenda_node.InnerHtml);
-        var agenda_title_node = hda.DocumentNode.SelectSingleNode(@"//a");
-        if (agenda_title_node != null)
-        {
-          var agenda_title = agenda_title_node.InnerHtml.Trim();
-          var agenda_url = agenda_title_node.SelectSingleNode(".").Attributes["href"].Value.Trim();
-          Console.WriteLine($"agenda_title_node : {agenda_title}");
-          Console.WriteLine($"agenda_url : {agenda_url}");
-          yield return new AgendaDto(agenda_title ,agenda_url );
-        }
-      }
-    }
-
-   private static void ImageFormat(){
-       var imageName = "123.png";
-       var imageHtml = $"<div style=\"text-indent:0;text-align:center;margin-right:auto;margin-left:auto;width:99%;page-break-before:auto;page-break-inside:avoid;page-break-after:auto;\"><div style=\"margin-left:0;margin-right:0;text-align:center;text-indent:0;width:100%;\"><p style=\"display:inline-block;text-indent:0;width:100%;\"><img alt=\"aladore 1\" src=\"../Images/{imageName}\" style=\"width:99%;\"/></p></div></div>";
-
-
-   }
 
   }
 }
