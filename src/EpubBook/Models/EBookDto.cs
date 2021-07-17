@@ -30,8 +30,11 @@ namespace EpubBook.Models
     /// <value></value>
     public IEnumerable<AgendaDto> Agenda{get;set;}
 
-
-    
-
+    /// <summary>
+    /// 內容
+    /// </summary>
+    /// <value></value>
+    public IEnumerable<ContentDto> Contents {get;set;}
+  
   }
 }

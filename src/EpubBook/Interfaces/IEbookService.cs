@@ -2,14 +2,14 @@ using EpubBook.Models;
 
 namespace EpubBook.Interfaces
 {
-    public interface IEbookService
+    public interface IEBookService
     {
         /// <summary>
         /// 建立EBookDto
         /// </summary>
-        /// <param name="Url"></param>
+        /// <param name="uri"></param>
         /// <returns></returns>
-         public EBookDto CreateEbookDtoFromUrl(string Url); 
+        EBookDto CreateEbookDtoFromUrl(string uri); 
 
     }
 }
