@@ -1,0 +1,9 @@
+
+version: '3.4'
+
+services:
+  epubbook:
+    image: epubbook
+    build:
+      context: .
+      dockerfile: src/EpubBook/Dockerfile

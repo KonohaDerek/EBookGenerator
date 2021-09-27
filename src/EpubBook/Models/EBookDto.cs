@@ -22,7 +22,13 @@ namespace EpubBook.Models
     /// 書名
     /// </summary>
     /// <value></value>
-    public string Name {get;set;}
+    public string Title {get;set;}
+
+    /// <summary>
+    /// 簡述
+    /// </summary>
+    /// <value></value>
+    public string Describe{get;set;}
 
     /// <summary>
     /// 目錄

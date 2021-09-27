@@ -5,8 +5,10 @@
 ----------------------------------------------------------------
 【内容】
 全書共通的基本樣式（邏輯方向指定・子元素排版方向改變時的對應用）
+
 【CSS檔案版本】
 ver.1
+
 【細節】
 ・【子元素排版方向改變時的對應】指定連結
 ・【子元素排版方向改變時的對應】缺字圖片
@@ -22,6 +24,7 @@ ver.1
 ・【邏輯方向指定】行長方向的最大尺寸
 ・【邏輯方向指定】行寬方向的尺寸
 ・【邏輯方向指定】行寬方向的最大尺寸
+
 【更新紀錄】
 2016/10/13 ver.1.0b
 ・初版
@@ -1144,7 +1147,9 @@ ver.1
 ----------------------------------------------------------------
 行長方向與行寬方向的尺寸指定，固定值與最大值不能
 使用於相同元素中
+
 ※但可以如下使用在子元素中
+
 <div class="measure-10em">
 <div class="extent-5em25">
 <p>内容</p>
@@ -1527,3 +1532,5 @@ ver.1
 .vrtl .max-extent-20em,  .hltr .vrtl .max-extent-20em  { max-height: none; max-width: 20.00em; }
 .vrtl .max-extent-30em,  .hltr .vrtl .max-extent-30em  { max-height: none; max-width: 30.00em; }
 .vrtl .max-extent-40em,  .hltr .vrtl .max-extent-40em  { max-height: none; max-width: 40.00em; }
+
+

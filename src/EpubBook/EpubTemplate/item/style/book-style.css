@@ -2,6 +2,7 @@
 @import "style-reset.css";
 @import "style-standard.css";
 @import "style-advance.css";
+@import "font.css";
 
 /* -------------------------------------------------------------
 當使用Windows確認時，請加上下面的CSS。
@@ -15,11 +16,14 @@
 ----------------------------------------------------------------
 【内容】
 一併讀入外部CSS，並且提供該書的專有設定
+
 【CSS檔案版本】
 ver. 1
+
 【細節】
 ・讀入外部CSS
 ・該書專有客製化區塊
+
 【更新紀錄】
 2016/10/13 ver.1.0b
 ・初版
@@ -30,23 +34,6 @@ ver. 1
  * 該書專有客製化區塊
  * ------------------------------------------------------------- */
 
-em {
-	font-style: normal;
-	border-bottom: 1px solid black;
-}
-
-strong {
-	font-weight: normal;
-    text-decoration: underline;
-    text-decoration-style: wavy;
-    -webkit-text-decoration-style: wavy;
-}
-
-code {
-	border: 1px solid black;
-	padding: 1px 3px;
-	margin: 0 3px;
-}
 
 /* 標題字體
 ---------------------------------------------------------------- */
@@ -144,6 +131,30 @@ p {
   line-height: 1.7;
   text-align: justify;
   font-family: serif-tw, serif;
+}
+
+code {
+	background-color: #f0f0f0;
+}
+
+pre {
+	background-color: #f0f0f0;
+	margin: 1.7rem 2rem;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+td,th {
+	border: 1px solid black;
+	margin: 0;
+	padding: 0.5rem;
+}
+
+tr {
+	margin: 0;padding: 0;
 }
 
 /* 連結
@@ -335,3 +346,5 @@ body.p-ad {
 }
 body.p-ad .main {
 }
+
+

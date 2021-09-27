@@ -5,10 +5,13 @@
 ----------------------------------------------------------------
 【内容】
 確認用樣式表
+
 【CSS檔案版本】
 ver.1
+
 【細節】
 ・指定Windows用字形
+
 【更新紀錄】
 2016/10/13 ver.1.0b
 ・初版
@@ -83,3 +86,6 @@ ver.1
 .hltr .vrtl .mfont { font-family: serif-tw-v, serif-tw, serif; }
 .hltr .vrtl .gfont { font-family: sans-serif-tw-v, sans-serif-tw, sans-serif; }
 .hltr .vrtl .kfont { font-family: cursive-tw-v, cursive-tw, cursive; }
+
+
+

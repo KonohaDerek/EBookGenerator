@@ -6,6 +6,7 @@ using System;
 using RestSharp;
 using HtmlAgilityPack;
 using System.Linq;
+using System.Web;
 
 namespace EpubBook.Services
 {
@@ -14,8 +15,6 @@ namespace EpubBook.Services
     /// </summary>
     public class IThomeService : IEBookService
     {
-        private EBookDto Book;
-
         public IThomeService()
         {
 
@@ -57,7 +56,14 @@ namespace EpubBook.Services
 
             // 讀取各內容
             var content = GetContent(agenda.First().Url);
-            return new EBookDto();
+            
+            return new EBookDto(){
+                Creator = creator,
+                Author = author,
+                Title = title,
+                Describe = desc,
+                Agenda = agenda
+            };
         }
 
         /// <summary>
@@ -163,18 +169,17 @@ namespace EpubBook.Services
             return title_desc;
         }
 
-        private string GetContent(string url) 
+        public string GetContent(string url) 
         {
             var client = new RestClient();
             var request = new RestRequest(url);
             var response = client.Get(request);
             var doc = new HtmlDocument();
             doc.LoadHtml(response.Content);
-            // 簡述
             var content_Node = doc.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div/div[1]/div[2]/div[3]/div[2]");
             var content = content_Node.InnerHtml.Trim();
             Console.WriteLine($"content : {content}");
-            return content;
+            return HttpUtility.HtmlDecode(content);
         }
     }
 }
