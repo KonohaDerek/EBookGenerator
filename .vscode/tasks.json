@@ -93,6 +93,20 @@
             "netCore": {
                 "appProject": "${workspaceFolder}/src/EpubBook/EpubBook.csproj"
             }
+        },
+        {
+            "label": "test",
+            "command": "dotnet",
+            "type": "shell",
+            "group": "test",
+            "args": [
+                "test",
+                "${workspaceFolder}/tests/EpubBookTests/EpubBookTests.csproj"
+            ],
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
         }
     ]
 }

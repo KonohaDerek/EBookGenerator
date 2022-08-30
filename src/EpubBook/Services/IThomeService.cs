@@ -1,12 +1,15 @@
-using System.Runtime.InteropServices;
-using EpubBook.Models;
-using EpubBook.Interfaces;
-using System.Collections.Generic;
 using System;
-using RestSharp;
-using HtmlAgilityPack;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Web;
+using EpubBook.Interfaces;
+using EpubBook.Models;
+using HtmlAgilityPack;
+using RestSharp;
 
 namespace EpubBook.Services
 {
@@ -15,18 +18,16 @@ namespace EpubBook.Services
     /// </summary>
     public class IThomeService : IEBookService
     {
-        public IThomeService()
-        {
-
-        }
-
         /// <summary>
         /// 建立EBookDto
         /// </summary>
         /// <param name="Url"></param>
         /// <returns></returns>
-        public EBookDto CreateEbookDtoFromUrl(string uri)
+        public async Task<EBookDto> CreateEbookDtoFromUrlAsync(string uri)
         {
+            // 取得網址host
+            var host = new Uri(uri).Host;
+
             // 讀取網址內容
             var client = new RestClient();
             var request = new RestRequest(uri);
@@ -48,21 +49,37 @@ namespace EpubBook.Services
             var author = GetAuthor(document);
             var title = GetTitle(document);
             var desc = GetDescription(document);
-            var agenda = new List<AgendaDto>();
+            var agendas = new List<AgendaDto>();
+            var idx = 0;
             foreach (var doc in documents)
             {
-                agenda.AddRange(GetAgenda(doc).ToList());
+                agendas.AddRange(GetAgenda(doc, idx).ToList());
+                idx = agendas.Max(o => o.Idx);
             }
 
-            // 讀取各內容
-            var content = GetContent(agenda.First().Url);
-            
-            return new EBookDto(){
+            foreach (var agenda in agendas)
+            {
+                var content = GetContent(agenda.Url);
+                agenda.Content = new ContentDto()
+                {
+                    HtmlContent = content,
+                    ContentName = agenda.Title,
+                    Images = new List<ImageDto>()
+                };
+                await foreach (var img in ImageDto.LoadFromHtmlAsync(host, content))
+                {
+                    agenda.Content.Images.Add(img);
+                }
+            }
+
+            return new EBookDto()
+            {
+                Publisher = "iThome",
                 Creator = creator,
                 Author = author,
                 Title = title,
                 Describe = desc,
-                Agenda = agenda
+                Agenda = agendas,
             };
         }
 
@@ -86,7 +103,7 @@ namespace EpubBook.Services
                 if (!page_urls.Any(o => o == currLink))
                 {
                     page_urls.Add(currLink);
-                   yield return currLink;
+                    yield return currLink;
                 }
             }
         }
@@ -96,10 +113,10 @@ namespace EpubBook.Services
         /// </summary>
         /// <param name="page_urls"></param>
         /// <returns></returns>
-        private IEnumerable<HtmlDocument> GetPagingHtmlDocument(IEnumerable<string> page_urls) {
+        private IEnumerable<HtmlDocument> GetPagingHtmlDocument(IEnumerable<string> page_urls)
+        {
             foreach (var url in page_urls)
             {
-                Console.WriteLine($"url : {url}");
                 var client = new RestClient();
                 var request = new RestRequest(url);
                 var response = client.Get(request);
@@ -113,11 +130,12 @@ namespace EpubBook.Services
         /// 取得目錄
         /// </summary>
         /// <param name="document"></param>
-        private IEnumerable<AgendaDto> GetAgenda(HtmlDocument document)
+        private IEnumerable<AgendaDto> GetAgenda(HtmlDocument document, int idx)
         {
             var agenda_nodes = document.DocumentNode.SelectNodes("//h3[contains(@class, 'qa-list__title')]");
             foreach (var agenda_node in agenda_nodes.ToList())
             {
+                idx++;
                 HtmlDocument hda = new HtmlDocument();
                 // XPath 來解讀它
                 hda.LoadHtml(agenda_node.InnerHtml);
@@ -126,9 +144,7 @@ namespace EpubBook.Services
                 {
                     var agenda_title = agenda_title_node.InnerHtml.Trim();
                     var agenda_url = agenda_title_node.SelectSingleNode(".").Attributes["href"].Value.Trim();
-                    Console.WriteLine($"agenda_title_node : {agenda_title}");
-                    Console.WriteLine($"agenda_url : {agenda_url}");
-                    yield return new AgendaDto(agenda_title, agenda_url);
+                    yield return new AgendaDto(agenda_title, agenda_url, idx);
                 }
             }
         }
@@ -138,10 +154,8 @@ namespace EpubBook.Services
             //標題
             var authorNode = document.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div/div[1]/div[1]/div[2]/div[1]");
             var author = authorNode.InnerText.Replace("\n", "").Trim();
-            Console.WriteLine($"author : {author}");
             return author;
         }
-
 
         /// <summary>
         /// 取得標題
@@ -152,7 +166,6 @@ namespace EpubBook.Services
             //標題
             var titleNode = document.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div/div[2]/div[1]/div[2]/h3");
             var title = titleNode.InnerText.Replace("\n", "").Trim();
-            Console.WriteLine($"title : {title}");
             return title;
         }
 
@@ -165,11 +178,10 @@ namespace EpubBook.Services
             // 簡述
             var title_desc_Node = document.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div/div[2]/div[1]/div[2]/p");
             var title_desc = title_desc_Node.InnerText.Trim();
-            Console.WriteLine($"title_desc : {title_desc}");
             return title_desc;
         }
 
-        public string GetContent(string url) 
+        public string GetContent(string url)
         {
             var client = new RestClient();
             var request = new RestRequest(url);
@@ -178,8 +190,7 @@ namespace EpubBook.Services
             doc.LoadHtml(response.Content);
             var content_Node = doc.DocumentNode.SelectSingleNode("/html/body/div[2]/div/div/div[1]/div[2]/div[3]/div[2]");
             var content = content_Node.InnerHtml.Trim();
-            Console.WriteLine($"content : {content}");
-            return HttpUtility.HtmlDecode(content);
+            return content;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using EpubBook.Models;
 
 namespace EpubBook.Interfaces
@@ -9,7 +10,7 @@ namespace EpubBook.Interfaces
         /// </summary>
         /// <param name="uri"></param>
         /// <returns></returns>
-        EBookDto CreateEbookDtoFromUrl(string uri); 
+        Task<EBookDto> CreateEbookDtoFromUrlAsync(string uri); 
 
     }
 }

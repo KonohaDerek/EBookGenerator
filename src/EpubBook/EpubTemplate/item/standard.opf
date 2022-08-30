@@ -10,28 +10,27 @@
 <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
 
 <!-- 作品名 -->
-<dc:title id="title">就是「懶」才更需要重視DevOps</dc:title>
+<dc:title id="title">{{book_title}}</dc:title>
 
 <!-- 作者名 -->
-<dc:creator id="creator01">Neil (neil605164)</dc:creator>
+<dc:creator id="creator01">{{book_author}}</dc:creator>
 <meta refines="#creator01" property="role" scheme="marc:relators">aut</meta>
 <meta refines="#creator01" property="display-seq">1</meta>
 
 <!-- 出版社名 -->
-<dc:publisher id="publisher">IThome</dc:publisher>
+<dc:publisher id="publisher">{{book_publisher}}</dc:publisher>
 
 <!-- 語言 -->
 <dc:language>zh-TW</dc:language>
 
 <!-- 檔案id -->
-<dc:identifier id="unique-id">urn:uuid:d7a8d311-7cd0-40df-9443-65847561dacf</dc:identifier>
+<dc:identifier id="unique-id">urn:uuid:{{book_uuid}}</dc:identifier>
 
 <!-- 更新時間 -->
-<meta property="dcterms:modified">2014-11-01T00:00:00Z</meta>
+<meta property="dcterms:modified">{{book_update_at}}</meta>
 
 <!-- iBook指定字體 -->
 <meta property="ibooks:specified-fonts">true</meta>
-
 
 </metadata>
 
@@ -50,14 +49,14 @@
 
 <!-- image -->
 <item media-type="image/jpeg" id="cover"      href="image/cover.jpg" properties="cover-image"/>
+{{book_images}}
 
 <!-- xhtml -->
 <item media-type="application/xhtml+xml" id="p-cover"       href="xhtml/p-cover.xhtml" properties="svg"/>
 
 <item media-type="application/xhtml+xml" id="p-titlepage"   href="xhtml/p-titlepage.xhtml"/>
 <item media-type="application/xhtml+xml" id="p-toc"         href="xhtml/p-toc.xhtml"/>
-<item media-type="application/xhtml+xml" id="p-001"         href="xhtml/p-001.xhtml"/>
-<item media-type="application/xhtml+xml" id="p-002"         href="xhtml/p-002.xhtml"/>
+{{book_xhtmls}}
 <item media-type="application/xhtml+xml" id="p-colophon"    href="xhtml/p-colophon.xhtml"/>
 
 <!-- font -->
@@ -71,8 +70,7 @@
 
 <itemref linear="yes" idref="p-titlepage"   properties="page-spread-left"/>
 <itemref linear="yes" idref="p-toc"/>
-<itemref linear="yes" idref="p-001"/>
-<itemref linear="yes" idref="p-002"/>
+{{book_itemrefs}}
 <itemref linear="yes" idref="p-colophon"    properties="page-spread-left"/>
 </spine>
 

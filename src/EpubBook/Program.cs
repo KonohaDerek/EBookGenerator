@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using System;
 using EpubBook.Services;
+using System.Threading.Tasks;
 
 namespace EpubBook
 {
   class Program
   {
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
       Console.WriteLine("Hello World!");
       var ithome = new IThomeService();
-      ithome.CreateEbookDtoFromUrl("https://ithelp.ithome.com.tw/users/20120491/ironman/2538");
+      await ithome.CreateEbookDtoFromUrlAsync("https://ithelp.ithome.com.tw/users/20120491/ironman/2538");
     }
   }
 }

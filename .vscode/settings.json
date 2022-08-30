@@ -1,3 +1,11 @@
 {
-  "dotnet-test-explorer.testProjectPath": "tests/EpubBookTests"
+  "dotnet-test-explorer.testProjectPath": "tests/EpubBookTests",
+  "dotnet-test-explorer.enableTelemetry": false,
+  "cSpell.words": [
+    "Epub",
+    "itemrefs",
+    "Thome",
+    "xhtmls"
+  ],
+  "omnisharp.projectLoadTimeout": 120,
 }

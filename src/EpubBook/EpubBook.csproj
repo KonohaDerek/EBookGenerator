@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+  <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,4 +10,9 @@
     <PackageReference Include="restsharp" Version="106.11.7" />
   </ItemGroup>
 
+<ItemGroup> 
+  <Content Include="EpubTemplate/**"> 
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory> 
+  </Content> 
+</ItemGroup>
 </Project>
