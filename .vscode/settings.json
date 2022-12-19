@@ -1,5 +1,5 @@
 {
-  "dotnet-test-explorer.testProjectPath": "tests/EpubBookTests",
+  "dotnet-test-explorer.testProjectPath": "**/*Tests.@(csproj|vbproj|fsproj)",
   "dotnet-test-explorer.enableTelemetry": false,
   "cSpell.words": [
     "Epub",
@@ -8,4 +8,5 @@
     "xhtmls"
   ],
   "omnisharp.projectLoadTimeout": 120,
+  "source.fixAll.eslint": true
 }

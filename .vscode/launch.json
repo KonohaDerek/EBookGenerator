@@ -5,15 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": ".NET Core Launch (console)",
+      "name": ".NET Core Launch (web)",
       "type": "coreclr",
       "request": "launch",
-      "preLaunchTask": "build",
-      "program": "${workspaceFolder}/src/EpubBook/bin/Debug/netcoreapp3.1/EpubBook.dll",
+      "preLaunchTask": "webBuild",
+      "program": "${workspaceFolder}/src/EpubWeb/bin/Debug/net6.0/EpubWeb.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/src/EpubBook",
-      "console": "internalConsole",
-      "stopAtEntry": false
+      "cwd": "${workspaceFolder}/src/EpubWeb",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(http?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/src/EpubWeb/Views"
+      }
     },
     {
       "name": ".NET Core Attach",
@@ -29,6 +38,6 @@
       "netCore": {
         "appProject": "${workspaceFolder}/src/EpubBook/EpubBook.csproj"
       }
-    }
+    },
   ]
 }

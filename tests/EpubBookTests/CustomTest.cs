@@ -1,7 +1,9 @@
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -37,6 +39,20 @@ namespace EpubBookTests
                 Console.WriteLine(string.Format("<item media-type=\"image/{0}\" id=\"{1}\" href=\"{2}\"/>", file.Extension.Replace(".",""), fileName,Path.Combine("image",file.Directory.Name , file.Name )));
             }
 
+        }
+
+        [TestMethod]
+        public void UrlTest()
+        {
+            Dictionary<string, Func<string>> services = new Dictionary<string, Func<string>>(){
+                { "ithelp.ithome.com.tw",  ()=> "you got ithome"},
+            };
+
+            Uri uri = new Uri("https://ithelp.ithome.com.tw/users/20120491/ironman/2538");
+            Assert.IsTrue(services.ContainsKey(uri.Host));
+
+            Uri uri2 = new Uri("https://www.kobo.com/tw/zh/ebook/s-oxfWQrnTCw-h8hk2OKCw");
+            Assert.IsFalse(services.ContainsKey(uri2.Host));
         }
     }
 }
