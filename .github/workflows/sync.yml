@@ -16,7 +16,6 @@ jobs:
 
     - name: sync to azure
       run: |
-        git remote remove origin
-        git remote add origin https://${{ secrets.PAT }}@dev.azure.com/DerekProject/EBookGenerator/_git/EBookGenerator
+        git remote add azure https://${{ secrets.PAT }}@dev.azure.com/DerekProject/EBookGenerator/_git/EBookGenerator
         git checkout -b main
-        git push -u origin  main --force
+        git push -u azure main --force
