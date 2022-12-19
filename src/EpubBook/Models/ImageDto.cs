@@ -12,51 +12,66 @@ using RestSharp;
 
 namespace EpubBook.Models
 {
-  public class ImageDto
-  {
-    public string Name { get; set; }
-
-    public string Path { get; set; }
-
-    public byte[] ImageByte { get; set; }
-
-    public HtmlNode Node {get;set;}
-
-    public async Task SaveAsync()
+    public class ImageDto
     {
-      var basePath = "";
-      var fullPath = System.IO.Path.Combine(basePath, Path, Name);
-      using var mem = new MemoryStream(ImageByte);
-      using var stream = File.Create(fullPath);
-      await mem.CopyToAsync(stream);
-    }
+        public string Name { get; set; }
 
+        public string Path { get; set; }
 
-    public static async IAsyncEnumerable<ImageDto> LoadFromHtmlAsync(string html)
-    {
-      // Load the Html into the agility pack
-      HtmlDocument doc = new HtmlDocument();
-      doc.LoadHtml(html);
-      if (doc.DocumentNode.SelectNodes("//img") == null)
-      {
-        yield break;
-      }
+        public byte[] ImageByte { get; set; }
 
-      // Now, using LINQ to get all Images
-      var imageNodes = (from HtmlNode node in doc.DocumentNode.SelectNodes("//img")
-                        where node.Name == "img"
-                        select node).ToList();
+        public HtmlNode Node { get; set; }
 
-      foreach (var node in imageNodes)
-      {
-        yield return new ImageDto
+        public string SaveAsync(string path, int idx)
         {
-          Name = System.IO.Path.GetFileName(node.Attributes["src"].Value) ,
-          Path = node.Attributes["src"].Value,
-          ImageByte = await new HttpClient().GetByteArrayAsync(new Uri(node.Attributes["src"].Value)),
-          Node = node
-        };
-      }
+            var fullPath = System.IO.Path.Combine(path, string.Format("item/image/p-{0:000}/{1}", idx, Name));
+
+            var fileInfo = new FileInfo(fullPath);
+            if (!fileInfo.Directory.Exists)
+            {
+                fileInfo.Directory.Create();
+            }
+            if (File.Exists(fullPath))
+            {
+                return fullPath;
+            }
+            File.WriteAllBytes(fullPath, ImageByte);
+            return fullPath;
+        }
+
+
+        public static async IAsyncEnumerable<ImageDto> LoadFromHtmlAsync(string host, string html)
+        {
+            // Load the Html into the agility pack
+            HtmlDocument doc = new();
+            doc.LoadHtml(html);
+            if (doc.DocumentNode.SelectNodes("//img") == null)
+            {
+                yield break;
+            }
+
+            // Now, using LINQ to get all Images
+            var imageNodes = (from HtmlNode node in doc.DocumentNode.SelectNodes("//img")
+                              where node.Name == "img"
+                              select node).ToList();
+
+            foreach (var node in imageNodes)
+            {
+                var path = node.Attributes["src"].Value;
+                // check src is absolute path
+                if (!path.StartsWith("http"))
+                {
+                    path = "https://" + host + path;
+                }
+
+                yield return new ImageDto
+                {
+                    Name = System.IO.Path.GetFileName(node.Attributes["src"].Value),
+                    Path = node.Attributes["src"].Value,
+                    ImageByte = await new HttpClient().GetByteArrayAsync(new Uri(path)),
+                    Node = node
+                };
+            }
+        }
     }
-  }
 }
