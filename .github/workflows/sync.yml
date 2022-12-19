@@ -19,4 +19,4 @@ jobs:
         git remote add origin https://${{ secrets.PAT }}@dev.azure.com/DerekProject/EBookGenerator/_git/EBookGenerator
         git branch -D main
         git checkout -b main
-        git push -u azure main --force
+        git push -u origin main --force
