@@ -10,13 +10,13 @@ public static class GoogleDriverOption
     public static Command AddGoogleDriverOption(this Command cmd, out Option<string> GoogleDriverTokenOption , out Option<string> GoogleDriverPathOption)
     {
          GoogleDriverTokenOption = new Option<string>
-            (name: "--drive-token",
-            description: "An option set google-drive token.")
+            (name: "--driver-token",
+            description: "An option set google-driver token.")
         { IsRequired = true };
 
          GoogleDriverPathOption = new Option<string>
-            (name: "--drive-path",
-            description: "An option set google-drive path.")
+            (name: "--driver-path",
+            description: "An option set google-driver path.")
         { IsRequired = true };
 
         cmd.AddOption(GoogleDriverTokenOption);
